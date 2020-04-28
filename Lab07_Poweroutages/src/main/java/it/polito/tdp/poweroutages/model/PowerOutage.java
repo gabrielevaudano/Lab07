@@ -1,8 +1,6 @@
 package it.polito.tdp.poweroutages.model;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 public class PowerOutage {
 	private int id;
@@ -11,18 +9,20 @@ public class PowerOutage {
 	private LocalDateTime dateEventFinished;
 	private Integer customerAffected;
 	
-	private Long period;
+	private Integer period;
 	private Integer year;
 	
 	public PowerOutage(int id, Nerc nerc, LocalDateTime dateEventBegan, LocalDateTime dateEventFinished,
 			Integer customerAffected) {
+		
 		this.id = id;
 		this.nerc = nerc;
 		this.dateEventBegan = dateEventBegan;
 		this.dateEventFinished = dateEventFinished;
 		this.customerAffected = customerAffected;
 		
-		this.period = Duration.between(dateEventBegan, dateEventFinished).toHours();
+		Long period = Duration.between(dateEventBegan, dateEventFinished).toHours();
+		this.period = period.intValue();
 		
 		if (dateEventBegan.getYear()==dateEventFinished.getYear())
 			this.year = dateEventBegan.getYear();
@@ -55,8 +55,8 @@ public class PowerOutage {
 		return customerAffected;
 	}
 
-	public Long getPeriod() {
-		return period;
+	public Integer getPeriod() {
+		return this.period;
 	}
 
 
@@ -92,7 +92,7 @@ public class PowerOutage {
 
 	@Override
 	public String toString() {
-		return this.id + " : " + this.nerc;
+		return this.id + " : " + this.nerc + "; duration: " + this.period;
 	}
 
 	
