@@ -5,8 +5,11 @@ public class TestModel {
 	public static void main(String[] args) {
 		
 		Model model = new Model();
-		System.out.println(model.getNercList());
+
+		System.out.println(model.ricercaWorstCase(new Nerc(1, "ERCOT"), 100, 200000L));
 
 	}
+	
+	
 
 }
