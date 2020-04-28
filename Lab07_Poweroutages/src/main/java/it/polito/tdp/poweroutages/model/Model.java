@@ -9,18 +9,17 @@ public class Model {
 	
 	private PowerOutageDAO podao;
 	private List<PowerOutage> powerOutages;
-	private Long maxHours;
+	private Integer maxHours;
 	private Integer startingYear;
-	private Integer durationYear;
+	private Integer maxYears;
 	private Integer maxCustomers;
 	private List<PowerOutage> powerOutagesFinale;
 	private NercMap map;
 	
 	public Model() {
 		podao = new PowerOutageDAO();		
-		maxHours = 0L;
+		maxHours = 0;
 		startingYear = 0;
-		durationYear = 0;
 		maxCustomers = 0;
 		map = new NercMap();
 	}
@@ -33,21 +32,21 @@ public class Model {
 		return podao.getPowerOutageList(map);
 	}
 	
-	public List<PowerOutage> ricercaWorstCase(Nerc n, Integer maxCustomers, Long maxHours) {
+	public List<PowerOutage> ricercaWorstCase(Nerc n, Integer maxYears, Integer maxHours) {
 		this.getNercList();
 
 		powerOutages = podao.getPowerOutageListByNerc(map, n);
 		List<PowerOutage> parziale = new ArrayList<PowerOutage>();
 		
-		this.maxCustomers = maxCustomers;
+		this.maxYears = maxYears;
 		this.maxHours = maxHours;
 		
-		cerca(0L, parziale);
+		cerca(0, parziale);
 		
 		return powerOutagesFinale;
 	}
 	
-	private void cerca(Long livello, List<PowerOutage> parziale) {
+	private void cerca(Integer livello, List<PowerOutage> parziale) {
 		// Condizione di terminazione
 		if(livello >= maxHours) {
 			Integer customersAffected = 0;
@@ -70,20 +69,20 @@ public class Model {
 			
 			if (this.isValido(po, livello)) {
 				parziale.add(po);
-				livello += po.getPeriod();
+				livello += po.getPeriod().intValue();
 				
 				cerca(livello, parziale);
 				
 				// Backtracking
 				parziale.remove(po);
-				livello -= po.getPeriod();
+				livello -= po.getPeriod().intValue();
 			}
 		}
 	}
 
-	private boolean isValido(PowerOutage po, Long livello) {
-		if ((po.getYear() - startingYear) >= durationYear || (po.getYear() - startingYear) < 0)
-			return false;
+	private boolean isValido(PowerOutage po, Integer livello) {
+		if ((po.getYear() - startingYear) >= maxYears || (po.getYear() - startingYear) < 0)
+		    return false;
 		
 		if (livello + po.getPeriod() > maxHours)
 			return false;

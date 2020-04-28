@@ -6,7 +6,7 @@ public class TestModel {
 		
 		Model model = new Model();
 
-		System.out.println(model.ricercaWorstCase(new Nerc(1, "ERCOT"), 100, 200000L));
+		System.out.println(model.ricercaWorstCase(new Nerc(1, "ERCOT"), 4, 200));
 
 	}
 	
