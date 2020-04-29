@@ -4,9 +4,10 @@ public class TestModel {
 
 	public static void main(String[] args) {
 		
-		Model model = new Model();
 
-		System.out.println(model.getNercList());
+		Model model = new Model();
+		
+		System.out.println(model.ricercaWorstCase(new Nerc(1, "MAAC"), 2, 20));
 
 	}
 	

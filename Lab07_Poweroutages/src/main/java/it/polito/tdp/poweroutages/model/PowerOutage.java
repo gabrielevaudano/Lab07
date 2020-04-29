@@ -1,19 +1,19 @@
 package it.polito.tdp.poweroutages.model;
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class PowerOutage {
 	private int id;
 	private Nerc nerc;
 	private LocalDateTime dateEventBegan;
 	private LocalDateTime dateEventFinished;
-	private Integer customerAffected;
+	private int customerAffected;
 	
-	private Integer period;
-	private Integer year;
+	private long period;
+	private int year;
 	
 	public PowerOutage(int id, Nerc nerc, LocalDateTime dateEventBegan, LocalDateTime dateEventFinished,
-			Integer customerAffected) {
+			int customerAffected) {
 		
 		this.id = id;
 		this.nerc = nerc;
@@ -21,13 +21,8 @@ public class PowerOutage {
 		this.dateEventFinished = dateEventFinished;
 		this.customerAffected = customerAffected;
 		
-		Long period = Duration.between(dateEventBegan, dateEventFinished).toHours();
-		this.period = period.intValue();
-		
-		if (dateEventBegan.getYear()==dateEventFinished.getYear())
-			this.year = dateEventBegan.getYear();
-		else 
-			System.err.println("La valutazione da inserire è a cavallo tra due anni. Non verrà pertanto considerata.");
+		this.period = dateEventBegan.until(dateEventFinished, ChronoUnit.HOURS);
+		this.year = dateEventBegan.getYear();
 	}
 
 	public int getId() {
@@ -51,16 +46,16 @@ public class PowerOutage {
 	}
 
 
-	public Integer getCustomerAffected() {
+	public int getCustomerAffected() {
 		return customerAffected;
 	}
 
-	public Integer getPeriod() {
+	public long getPeriod() {
 		return this.period;
 	}
 
 
-	public Integer getYear() {
+	public int getYear() {
 		return year;
 	}
 
@@ -92,8 +87,9 @@ public class PowerOutage {
 
 	@Override
 	public String toString() {
-		return this.id + " : " + this.nerc + "; duration: " + this.period;
+		return String.format("\t%s\t%s\t%s\t%s\t%s", year, dateEventBegan, dateEventFinished, customerAffected, period);
 	}
+
 
 	
 	

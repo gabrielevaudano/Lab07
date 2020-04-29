@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NercMap {
-	Map<Integer, Nerc> map;
+    Map<Integer, Nerc> map;
 
 	public NercMap() {
 		this.map = new HashMap<Integer, Nerc>();
